@@ -50,11 +50,10 @@ public class ProductServiceImpl implements ProductService {
 
         if (productRepository.findById(id).isPresent()) {
             return
-                    productRepository.findById(id).get()
+                    productRepository.findById(id).get();
         }
     };
     throw new ProductNotExist("Product Not Exist");
 
     }
 
-}

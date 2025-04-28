@@ -23,75 +23,73 @@ public class CartItemServiceImpl implements CartItemService {
     private final ProductService productService;
     private final CartItemRepository cartItemRepository;
 
-@Autowired
-    public CartItemServiceImpl (UserService userService, ProductService productService,CartItemRepository cartItemRepository){
+    @Autowired
+    public CartItemServiceImpl(UserService userService, ProductService productService, CartItemRepository cartItemRepository) {
         this.userService = userService;
         this.productService = productService;
         this.cartItemRepository = cartItemRepository;
     }
 
-@Override
-public void putCartItem(FireBaseUserData fireBaseUserData, Integer pid, Integer quantity) {
+    @Override
+    public void putCartItem(FireBaseUserData fireBaseUserData, Integer pid, Integer quantity) {
         UserEntity userEntity = userService.getEntityByEmail(fireBaseUserData);
         ProductEntity productEntity = productService.getProductEntityById(pid);
         Optional<CartItemEntity> existingCardItem = cartItemRepository.findByUserAndProduct(userEntity, productEntity);
 
         CartItemEntity cartItemEntity;
-        if(existingCartItem.isPresnt()){
+        if (existingCartItem.isPresnt()) {
             cartItemEntity = existingCartItem.get();
-            cartItemEntity.setQuantity(cartItemEntity.getQuantity()+ quantity);
+            cartItemEntity.setQuantity(cartItemEntity.getQuantity() + quantity);
 
-        }else{
+        } else {
             cartItemEntity = new CartItemEntity(userEntity, productEntity, quantity);
         }
         cartItemRepository.save(cartItemEntity);
 
 
-
-
     }
 
     @Override
-    public List<CartItemResponseData> getCartItemList(FireBaseUserData fireBaseUserData){
-     UserEntity userEntity = userService.getEntityByFireBaseUserData(fireBaseUserData);
-     List<CartItemResponseData> cartItemResponseDataList = new ArrayList<>();
+    public List<CartItemResponseData> getCartItemList(FireBaseUserData fireBaseUserData) {
+        UserEntity userEntity = userService.getEntityByFireBaseUserData(fireBaseUserData);
+        List<CartItemResponseData> cartItemResponseDataList = new ArrayList<>();
 
-     for (CartItemEntity cartItemEntity : cartItemRepository.findByUser(userEntity)) {
-         cartItemResponseDataList.add(
-                 new CartItemResponseData(cartItemEntity));
+        for (CartItemEntity cartItemEntity : cartItemRepository.findByUser(userEntity)) {
+            cartItemResponseDataList.add(
+                    new CartItemResponseData(cartItemEntity));
 
-     }
-     return cartItemResponseDataList;
+        }
+        return cartItemResponseDataList;
     }
 
 
     @Override
-    public CartItemResponseData updateItem(Integer pid, Integer quantity, FireBaseUserData fireBaseUserData){
-    UserEntity userEntity = userService.getEntityByFireBaseUserData(fireBaseUserData);
-    ProductEntity productEntity = productService.getProductEntityById(pid);
+    public CartItemResponseData updateItem(Integer pid, Integer quantity, FireBaseUserData fireBaseUserData) {
+        UserEntity userEntity = userService.getEntityByFireBaseUserData(fireBaseUserData);
+        ProductEntity productEntity = productService.getProductEntityById(pid);
 
-    if(cartItemRepository.findByUserAndProduct(userEntity , productEntity).isPresent()){
-        CartItemEntity existingCartItem = cartItemRepository.findByUserAndProduct(userEntity, productEntity).get();
-                existingCartItem.setQuantity(quantity);
-        cartItemRepository.save(existingCartItem);
-        return new CartItemResponseData(existingCartItem);
-    }
-    throw new ProductNotExist("Product Not Exist");
+        if (cartItemRepository.findByUserAndProduct(userEntity, productEntity).isPresent()) {
+            CartItemEntity existingCartItem = cartItemRepository.findByUserAndProduct(userEntity, productEntity).get();
+            existingCartItem.setQuantity(quantity);
+            cartItemRepository.save(existingCartItem);
+            return new CartItemResponseData(existingCartItem);
+        }
+        throw new ProductNotExist("Product Not Exist");
     }
 
     @Transactional
     @Override
-    public void deleteItem(Integer pid, FireBaseUserData fireBaseUserData){
+    public void deleteItem(Integer pid, FireBaseUserData fireBaseUserData) {
         UserEntity userEntity = userService.getEntityByFireBaseUserData(fireBaseUserData);
         ProductEntity productEntity = productService.getProductEntityByPid(pid);
         Optional<CartItemEntity> existingCartItem = cartItemRepository.findByUserAndProduct(userEntity, ProductEntity);
 
         CartItemEntity cartItemEntity;
-        if(existingCartItem.isPresent()){
+        if (existingCartItem.isPresent()) {
             cartItemEntity = existingCartItem.get();
             cartItemRepository.delete(cartItemEntity);
+        } else {
+            throw new ProductNotExist("Product Not Exist");
         }
-        else{
-        throw new ProductNotExist("Product Not Exist");
     }
 }
