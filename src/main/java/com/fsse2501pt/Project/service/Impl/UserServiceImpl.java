@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity getEntityByEmail (FireBaseUserData fireBaseUserData) {
+    public UserEntity getEntityByEmail(FireBaseUserData fireBaseUserData) {
         Optional<UserEntity> optionalUserEntity = userRepository.findByEmail(fireBaseUserData.getEmail());
 
         if(optionalUserEntity.isPresent()){
