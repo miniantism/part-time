@@ -8,4 +8,7 @@ public class JwtUtil {
     public static FireBaseUserData toFireBaseUserData (JwtAuthenticationToken token) {
         return new FireBaseUserData(token);
     }
+
+    public static FireBaseUserData getFireBaseUserData(JwtAuthenticationToken jwt) {
+    }
 }

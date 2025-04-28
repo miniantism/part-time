@@ -13,7 +13,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +31,7 @@ public class CartItemServiceImpl implements CartItemService {
     }
 
 @Override
-    public void putCartItem (FireBaseUserData fireBaseUserData, Integer pid, Integer quantity) {
+public void putCartItem(FireBaseUserData fireBaseUserData, Integer pid, Integer quantity) {
         UserEntity userEntity = userService.getEntityByEmail(fireBaseUserData);
         ProductEntity productEntity = productService.getProductEntityById(pid);
         Optional<CartItemEntity> existingCardItem = cartItemRepository.findByUserAndProduct(userEntity, productEntity);
@@ -71,7 +70,7 @@ public class CartItemServiceImpl implements CartItemService {
     UserEntity userEntity = userService.getEntityByFireBaseUserData(fireBaseUserData);
     ProductEntity productEntity = productService.getProductEntityById(pid);
 
-    if(cartItemRepository.findByUserAndProduct(userEntity productEntity).isPresent()){
+    if(cartItemRepository.findByUserAndProduct(userEntity , productEntity).isPresent()){
         CartItemEntity existingCartItem = cartItemRepository.findByUserAndProduct(userEntity, productEntity).get();
                 existingCartItem.setQuantity(quantity);
         cartItemRepository.save(existingCartItem);

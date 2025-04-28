@@ -38,7 +38,7 @@ public class CartItemController {
     public List<CartItemResponseDto> getCartItem(JwtAuthenticationToken jwt){
         List<CartItemResponseDto> cartItemResponseDtoList = new ArrayList<>();
 
-        for (CartItemResponseData cartItemResponseData: cartItemService.getCartItemList(JwtUtil.getFireBaseUserData(jwt)){
+        for (CartItemResponseData cartItemResponseData: cartItemService.getCartItemList(JwtUtil.getFireBaseUserData(jwt))){
             cartItemResponseDtoList.add(new CartItemResponseDto(cartItemResponseData));
         }
         return cartItemResponseDtoList;
@@ -50,9 +50,8 @@ public class CartItemController {
                                                @PathVariable @Positive Integer quantity){
 
         return new cartItemResponseDto(
-                cartItemService.updateItem(pid,quantity, JwtUtil.getFireBaseUserData(jwt));
+                cartItemService.updateItem(pid,quantity, JwtUtil.getFireBaseUserData(jwt)));
 
-        );
     }
 
     @DeleteMapping("/{pid}")
