@@ -1,6 +1,6 @@
 package com.fsse2501pt.Project.service.Impl;
 
-import com.fsse2501pt.Project.data.domainObject.FireBaseUserData;
+import com.fsse2501pt.Project.data.domainObject.FirebaseUserData;
 import com.fsse2501pt.Project.data.entity.UserEntity;
 import com.fsse2501pt.Project.repository.UserRepository;
 import com.fsse2501pt.Project.service.UserService;
@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity getEntityByEmail(FireBaseUserData fireBaseUserData) {
+    public UserEntity getEntityByFirebaseUserData(FirebaseUserData fireBaseUserData) {
         Optional<UserEntity> optionalUserEntity = userRepository.findByEmail(fireBaseUserData.getEmail());
 
         if(optionalUserEntity.isPresent()){

@@ -1,10 +1,10 @@
 package com.fsse2501pt.Project.controller;
 
 import com.fsse2501pt.Project.data.domainObject.CartItemResponseData;
-import com.fsse2501pt.Project.data.domainObject.FireBaseUserData;
+import com.fsse2501pt.Project.data.domainObject.FirebaseUserData;
 import com.fsse2501pt.Project.data.dto.CartItemResponseDto;
 import com.fsse2501pt.Project.service.CartItemService;
-import com.fsse2501pt.Project.utill.JwtUtil;
+import com.fsse2501pt.Project.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +28,8 @@ public class CartItemController {
     @PutMapping("/{pid}/{quantity}")
     public void putCartItem(JwtAuthenticationToken jwt,
                             @PathVariable Integer pid,
-                            @PathVariable @Positive Integer quantity) {
-        FireBaseUserData fireBaseUserData = JwtUtil.toFireBaseUserData (jwt);
+                            @PathVariable Integer quantity) {
+        FirebaseUserData fireBaseUserData = JwtUtil.toFirebaseUserData (jwt);
 
         cartItemService.putCartItem(fireBaseUserData, pid, quantity);
     }
@@ -38,7 +38,7 @@ public class CartItemController {
     public List<CartItemResponseDto> getCartItem(JwtAuthenticationToken jwt){
         List<CartItemResponseDto> cartItemResponseDtoList = new ArrayList<>();
 
-        for (CartItemResponseData cartItemResponseData: cartItemService.getCartItemList(JwtUtil.getFireBaseUserData(jwt))){
+        for (CartItemResponseData cartItemResponseData: cartItemService.getCartItemList(JwtUtil.getFirebaseUserData(jwt))){
             cartItemResponseDtoList.add(new CartItemResponseDto(cartItemResponseData));
         }
         return cartItemResponseDtoList;
@@ -47,17 +47,17 @@ public class CartItemController {
     @PatchMapping("/{pid}/{quantity}")
     public CartItemResponseDto updateCartItem (JwtAuthenticationToken jwt,
                                                @PathVariable Integer pid,
-                                               @PathVariable @Positive Integer quantity){
+                                               @PathVariable Integer quantity){
 
-        return new cartItemResponseDto(
-                cartItemService.updateItem(pid,quantity, JwtUtil.getFireBaseUserData(jwt)));
+        return new CartItemResponseDto(
+                cartItemService.updateItem(pid,quantity, JwtUtil.getFirebaseUserData(jwt)));
 
     }
 
     @DeleteMapping("/{pid}")
     public void deleteCartItem(@PathVariable Integer pid,
                                JwtAuthenticationToken jwt){
-        cartItemService.deleteItem(pid, JwtUtil.getFireBaseUserData(jwt));
+        cartItemService.deleteItem(pid, JwtUtil.getFirebaseUserData(jwt));
         
     }
 

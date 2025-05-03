@@ -2,11 +2,11 @@ package com.fsse2501pt.Project.data.domainObject;
 
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 
-public class FireBaseUserData {
+public class FirebaseUserData {
     private String firebaseUid;
     private String email;
 
-    public FireBaseUserData (JwtAuthenticationToken jwtToken) {
+    public FirebaseUserData(JwtAuthenticationToken jwtToken) {
         this.firebaseUid = (String)jwtToken.getTokenAttributes().get("user_id");
         this.email = (String) jwtToken.getTokenAttributes().get("email");
 

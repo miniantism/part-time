@@ -4,14 +4,14 @@ import com.fsse2501pt.Project.data.domainObject.ProductResponseData;
 
 import java.math.BigDecimal;
 
-public class GetAllProductResponseDto {
+public class ProductGetAllResponseDto {
     private Integer pid;
     private String name;
     private String imageUrl;
     private BigDecimal price;
     private boolean hasStock;
 
-    public GetAllProductResponseDto(ProductResponseData data) {
+    public ProductGetAllResponseDto(ProductResponseData data) {
         this.pid = data.getPid();
         this.name = data.getName();
         this.imageUrl = data.getImageUrl();

@@ -1,27 +1,27 @@
 package com.fsse2501pt.Project.data.entity;
 
-import com.fsse2501pt.Project.data.domainObject.FireBaseUserData;
+import com.fsse2501pt.Project.data.domainObject.FirebaseUserData;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "user")
 public class UserEntity {
     @Id
-    @GeneratedValue(Strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer uid;
 
     @Column (nullable = false, unique = true)
     private String email;
 
     @Column (nullable = false, unique = true)
-    private String fireBaseUid;
+    private String firebaseUid;
 
     public UserEntity() {
     }
 
-    public UserEntity(FireBaseUserData fireBaseUserData) {
+    public UserEntity(FirebaseUserData fireBaseUserData) {
         this.email = fireBaseUserData.getEmail();
-        this.fireBaseUid = fireBaseUserData.getFirebaseUid();
+        this.firebaseUid = fireBaseUserData.getFirebaseUid();
     }
 
     public Integer getUid() {
@@ -41,10 +41,10 @@ public class UserEntity {
     }
 
     public String getFireBaseUid() {
-        return fireBaseUid;
+        return firebaseUid;
     }
 
     public void setFireBaseUid(String fireBaseUid) {
-        this.fireBaseUid = fireBaseUid;
+        this.firebaseUid = firebaseUid;
     }
 }

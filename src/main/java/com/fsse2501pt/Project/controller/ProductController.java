@@ -1,8 +1,8 @@
 package com.fsse2501pt.Project.controller;
 
 import com.fsse2501pt.Project.data.domainObject.ProductResponseData;
-import com.fsse2501pt.Project.data.dto.GetAllProductResponseDto;
-import com.fsse2501pt.Project.data.dto.ProductResponseDto;
+import com.fsse2501pt.Project.data.dto.ProductGetAllResponseDto;
+import com.fsse2501pt.Project.data.dto.ProductByIdResponseDto;
 import com.fsse2501pt.Project.service.ProductService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,11 +21,11 @@ public class ProductController {
         this.productService = productService;
     }
 @GetMapping
-    public List<GetAllProductResponseDto> getAllProduct(){
-        List<GetAllProductResponseDto> dtoList = new ArrayList<>();
+    public List<ProductGetAllResponseDto> getAllProduct(){
+        List<ProductGetAllResponseDto> dtoList = new ArrayList<>();
 
         for(ProductResponseData data: productService.getAllProduct()){
-            dtoList.add(new GetAllProductResponseDto(data));
+            dtoList.add(new ProductGetAllResponseDto(data));
 
         }
         return dtoList;
@@ -33,10 +33,10 @@ public class ProductController {
     }
 
     @GetMapping("/{pid}")
-    public ProductResponseDto getByPid(@PathVariable Integer pid){
-        return new ProductResponseDto (
-                productService.getProductById(pid)
-        );
+    public ProductByIdResponseDto getByPid(@PathVariable Integer pid){
+        return new ProductByIdResponseDto(
+                productService.getProductById(pid));
+
     }
 
 }

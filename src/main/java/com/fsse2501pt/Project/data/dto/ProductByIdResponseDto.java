@@ -1,10 +1,11 @@
 package com.fsse2501pt.Project.data.dto;
 
 import com.fsse2501pt.Project.data.domainObject.ProductResponseData;
+import com.fsse2501pt.Project.data.domainObject.TransactionProductResponseData;
 
 import java.math.BigDecimal;
 
-public class ProductResponseDto {
+public class ProductByIdResponseDto {
     private Integer pid;
     private String name;
     private String description;
@@ -12,13 +13,23 @@ public class ProductResponseDto {
     private BigDecimal price;
     private Integer stock;
 
-    public ProductResponseDto(ProductResponseData data) {
-        this.pid = data.getPid();
-        this.name = data.getName();
-        this.description = data.getDescription();
-        this.imageUrl = data.getImageUrl();
-        this.price = data.getPrice();
-        this.stock = data.getStock();
+
+    public ProductByIdResponseDto(ProductResponseData productByIdResponseDto) {
+        this.pid = productByIdResponseDto.getPid();
+        this.name = productByIdResponseDto.getName();
+        this.description = productByIdResponseDto.getDescription();
+        this.imageUrl = productByIdResponseDto.getImageUrl();
+        this.price = productByIdResponseDto.getPrice();
+        this.stock = productByIdResponseDto.getStock();
+
+    }
+    public ProductByIdResponseDto(TransactionProductResponseData transactionProductResponseData) {
+        this.pid = transactionProductResponseData.getPid();
+        this.name = transactionProductResponseData.getName();
+        this.description = transactionProductResponseData.getDescription();
+        this.imageUrl = transactionProductResponseData.getImageUrl();
+        this.price = transactionProductResponseData.getPrice();
+        this.stock = transactionProductResponseData.getStock();
 
     }
 

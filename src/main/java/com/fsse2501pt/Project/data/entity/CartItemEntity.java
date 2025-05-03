@@ -25,7 +25,8 @@ public class CartItemEntity {
 
     }
 
-    CartItemEntity (cart){};
+    public CartItemEntity(UserEntity userEntity, ProductEntity productEntity, Integer quantity) {
+    }
 
     public Integer getCid() {
         return cid;

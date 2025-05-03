@@ -1,5 +1,6 @@
 package com.fsse2501pt.Project.api;
 
+import com.fsse2501pt.Project.data.dto.UserResponseDto;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

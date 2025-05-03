@@ -28,7 +28,7 @@ public class CartItemResponseData {
         this.cid = cid;
     }
 
-    public static ProductEntity getProductEntity() {
+    public ProductEntity getProductEntity() {
         return productEntity;
     }
 

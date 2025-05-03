@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 @Table(name = "product")
 
 public class ProductEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer pid;

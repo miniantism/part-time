@@ -1,10 +1,12 @@
 package com.fsse2501pt.Project.service.Impl;
 
 import com.fsse2501pt.Project.data.domainObject.CartItemResponseData;
-import com.fsse2501pt.Project.data.domainObject.FireBaseUserData;
+import com.fsse2501pt.Project.data.domainObject.FirebaseUserData;
 import com.fsse2501pt.Project.data.entity.CartItemEntity;
+
 import com.fsse2501pt.Project.data.entity.ProductEntity;
 import com.fsse2501pt.Project.data.entity.UserEntity;
+import com.fsse2501pt.Project.exception.ProductNotFoundException;
 import com.fsse2501pt.Project.repository.CartItemRepository;
 import com.fsse2501pt.Project.service.CartItemService;
 import com.fsse2501pt.Project.service.ProductService;
@@ -31,13 +33,13 @@ public class CartItemServiceImpl implements CartItemService {
     }
 
     @Override
-    public void putCartItem(FireBaseUserData fireBaseUserData, Integer pid, Integer quantity) {
-        UserEntity userEntity = userService.getEntityByEmail(fireBaseUserData);
-        ProductEntity productEntity = productService.getProductEntityById(pid);
-        Optional<CartItemEntity> existingCardItem = cartItemRepository.findByUserAndProduct(userEntity, productEntity);
+    public void putCartItem(FirebaseUserData fireBaseUserData, Integer pid, Integer quantity) {
+        UserEntity userEntity = userService.getEntityByFirebaseUserData(fireBaseUserData);
+        ProductEntity productEntity = productService.getProductByPid(pid);
+        Optional<CartItemEntity> existingCartItem = cartItemRepository.findByUserAndProduct(userEntity,productEntity);
 
         CartItemEntity cartItemEntity;
-        if (existingCartItem.isPresnt()) {
+        if (existingCartItem.isPresent()) {
             cartItemEntity = existingCartItem.get();
             cartItemEntity.setQuantity(cartItemEntity.getQuantity() + quantity);
 
@@ -50,8 +52,8 @@ public class CartItemServiceImpl implements CartItemService {
     }
 
     @Override
-    public List<CartItemResponseData> getCartItemList(FireBaseUserData fireBaseUserData) {
-        UserEntity userEntity = userService.getEntityByFireBaseUserData(fireBaseUserData);
+    public List<CartItemResponseData> getCartItemList(FirebaseUserData fireBaseUserData) {
+        UserEntity userEntity = userService.getEntityByFirebaseUserData(fireBaseUserData);
         List<CartItemResponseData> cartItemResponseDataList = new ArrayList<>();
 
         for (CartItemEntity cartItemEntity : cartItemRepository.findByUser(userEntity)) {
@@ -64,9 +66,9 @@ public class CartItemServiceImpl implements CartItemService {
 
 
     @Override
-    public CartItemResponseData updateItem(Integer pid, Integer quantity, FireBaseUserData fireBaseUserData) {
-        UserEntity userEntity = userService.getEntityByFireBaseUserData(fireBaseUserData);
-        ProductEntity productEntity = productService.getProductEntityById(pid);
+    public CartItemResponseData updateItem(Integer pid, Integer quantity, FirebaseUserData fireBaseUserData) {
+        UserEntity userEntity = userService.getEntityByFirebaseUserData(fireBaseUserData);
+        ProductEntity productEntity = productService.getProductByPid(pid);
 
         if (cartItemRepository.findByUserAndProduct(userEntity, productEntity).isPresent()) {
             CartItemEntity existingCartItem = cartItemRepository.findByUserAndProduct(userEntity, productEntity).get();
@@ -74,22 +76,37 @@ public class CartItemServiceImpl implements CartItemService {
             cartItemRepository.save(existingCartItem);
             return new CartItemResponseData(existingCartItem);
         }
-        throw new ProductNotExist("Product Not Exist");
+        throw new ProductNotFoundException(pid);
     }
 
     @Transactional
     @Override
-    public void deleteItem(Integer pid, FireBaseUserData fireBaseUserData) {
-        UserEntity userEntity = userService.getEntityByFireBaseUserData(fireBaseUserData);
-        ProductEntity productEntity = productService.getProductEntityByPid(pid);
-        Optional<CartItemEntity> existingCartItem = cartItemRepository.findByUserAndProduct(userEntity, ProductEntity);
+    public void deleteItem(Integer pid, FirebaseUserData fireBaseUserData) {
+        UserEntity userEntity = userService.getEntityByFirebaseUserData(fireBaseUserData);
+        ProductEntity productEntity = productService.getProductByPid(pid);
+        Optional<CartItemEntity> existingCartItem = cartItemRepository.findByUserAndProduct(userEntity, productEntity);
 
         CartItemEntity cartItemEntity;
         if (existingCartItem.isPresent()) {
             cartItemEntity = existingCartItem.get();
             cartItemRepository.delete(cartItemEntity);
         } else {
-            throw new ProductNotExist("Product Not Exist");
+            throw new ProductNotFoundException(pid);
         }
+    }
+
+    // because have change to roll back, so  mark "@transactional"
+    @Transactional
+    @Override
+    public void emptyCart(UserEntity userEntity){
+        cartItemRepository.deleteAllByUser(userEntity);
+    }
+
+
+
+    @Override
+    public List<CartItemEntity> getCartItemListByUserEntity (UserEntity userEntity){
+        return cartItemRepository.findByUser(userEntity);
+
     }
 }
